@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>World Bubble Map</title>
+  <link href="https://playground.anychart.com/oz2mwsAr/iframe" rel="canonical">
+  <meta content="AJAX Chart,Bubble Chart,Bubble Map,Chart from JSON,Choropleth Map,Geo Chart,Geo Visualization,JSON Chart,JSON Plot,Proportional Symbol Map,Statistical Data,Tooltip" name="keywords">
+  <meta content="AnyChart - JavaScript Charts designed to be embedded and integrated" name="description">
+  <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+  <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" rel="stylesheet" type="text/css">
+  <style>html,
+body,
+#container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}</style>
+ </head>
+ <body>
+  <div id="container"></div>
+  <script src="https://cdn.anychart.com/samples/maps-general-features/world-bubble-map/data.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-ui.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-map.min.js"></script>
+  <script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
+  <script src="https://cdn.anychart.com/geodata/latest/custom/world/world.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.15/proj4.js"></script>
+  <script type="text/javascript"><!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-bundle.min.js"></script> 
+  <style>
+      html,
+      body,
+      #container {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>   
+  <div id="container"></div> 
+  <div id="source" style="
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 10px;
+            color: #666666;
+            z-index: 10;
+        ">
+    Source: U.S. Census Bureau, Foreign Trade Division via WISERTrade: State HS Database 
+  </div> 
+  <script>
+      anychart.onDocumentReady(function () {
+        // Data: all countries kept, lat/long added where needed
+        var data = [
+          { id: "CA", name: "Canada", value: 7785118580, yoy: -12.66, lat: 56.1304, long: -106.3468 },
+          { id: "MX", name: "Mexico", value: 6710739591, yoy: 10.23, lat: 23.6345, long: -102.5528 },
+          { id: "CN", name: "China", value: 3393936500, yoy: 14.56, lat: 35.8617, long: 104.1954 },
+          { id: "NL", name: "Netherlands", value: 2854215944, yoy: 21.68, lat: 52.1326, long: 5.2913 },
+          { id: "JP", name: "Japan", value: 1926270460, yoy: -8.85, lat: 36.2048, long: 138.2529 },
+          { id: "BE", name: "Belgium", value: 1330472312, yoy: 6.53, lat: 50.5039, long: 4.4699 },
+          { id: "DE", name: "Germany", value: 1268750422, yoy: -8.15, lat: 51.1657, long: 10.4515 },
+          { id: "HK", name: "Hong Kong", value: 1190552836, yoy: -9.96, lat: 22.3193, long: 114.1694 },
+          { id: "SG", name: "Singapore", value: 944772914, yoy: -1.58, lat: 1.3521, long: 103.8198 },
+          { id: "BR", name: "Brazil", value: 868491049, yoy: 15.66, lat: -14.235, long: -51.9253 },
+          { id: "AU", name: "Australia", value: 816361320, yoy: 2.37, lat: -25.2744, long: 133.7751 },
+          { id: "GB", name: "United Kingdom", value: 810961957, yoy: -12.75, lat: 55.3781, long: -3.4360 },
+          { id: "IN", name: "India", value: 647981730, yoy: 34.73, lat: 20.5937, long: 78.9629 },
+          { id: "AE", name: "United Arab Emirates", value: 620957770, yoy: 23.88, lat: 23.4241, long: 53.8478 },
+          { id: "KR", name: "South Korea", value: 561305738, yoy: -4.79, lat: 35.9078, long: 127.7669 },
+          { id: "IT", name: "Italy", value: 480864988, yoy: -0.09, lat: 41.8719, long: 12.5674 },
+          { id: "PH", name: "Philippines", value: 451639209, yoy: 42.93, lat: 12.8797, long: 121.7740 },
+          { id: "TW", name: "Taiwan", value: 415542643, yoy: 26.08, lat: 23.6978, long: 120.9605 },
+          { id: "CL", name: "Chile", value: 375275578, yoy: 0.55, lat: -35.6751, long: -71.5430 },
+          { id: "FR", name: "France", value: 335419535, yoy: 5.24, lat: 46.6034, long: 1.8883 },
+          { id: "CO", name: "Colombia", value: 333263866, yoy: 23.97, lat: 4.5709, long: -74.2973 },
+          { id: "SA", name: "Saudi Arabia", value: 309078836, yoy: 11.63, lat: 23.8859, long: 45.0792 },
+          { id: "VN", name: "Vietnam", value: 266255529, yoy: 7.85, lat: 14.0583, long: 108.2772 },
+          { id: "PL", name: "Poland", value: 242354668, yoy: 20.95, lat: 51.9194, long: 19.1451 },
+          { id: "GT", name: "Guatemala", value: 211570316, yoy: 7.96 },
+          { id: "TR", name: "Turkey", value: 211563936, yoy: 31.28, lat: 38.9637, long: 35.2433 },
+          { id: "MY", name: "Malaysia", value: 199441047, yoy: -5.99 },
+          { id: "PE", name: "Peru", value: 185658308, yoy: 8.41 },
+          { id: "TH", name: "Thailand", value: 173670994, yoy: 3.94 },
+          { id: "DO", name: "Dominican Republic", value: 164153836, yoy: -0.27 },
+          { id: "ZA", name: "South Africa", value: 161852499, yoy: -27.44, lat: -30.5595, long: 22.9375 },
+          { id: "CH", name: "Switzerland", value: 141886181, yoy: 42.19 },
+          { id: "AR", name: "Argentina", value: 132626907, yoy: -28.83 },
+          { id: "CR", name: "Costa Rica", value: 128055046, yoy: 4.19 },
+          { id: "FI", name: "Finland", value: 115912925, yoy: 40.06 },
+          { id: "HN", name: "Honduras", value: 110874287, yoy: -12.35 },
+          { id: "PK", name: "Pakistan", value: 110164252, yoy: 5.45 },
+          { id: "ES", name: "Spain", value: 106549196, yoy: -41.76, lat: 40.4637, long: -3.7492 },
+          { id: "IE", name: "Ireland", value: 100979626, yoy: 13.43 },
+          { id: "ID", name: "Indonesia", value: 96896215, yoy: -32.67 },
+          { id: "SV", name: "El Salvador", value: 89572239, yoy: -4.65 },
+          { id: "PA", name: "Panama", value: 88643484, yoy: 2.68 },
+          { id: "IL", name: "Israel", value: 86457790, yoy: 6.49 },
+          { id: "BD", name: "Bangladesh", value: 78307555, yoy: 10.47 },
+          { id: "UA", name: "Ukraine", value: 68222341, yoy: 113.15 },
+          { id: "BH", name: "Bahrain", value: 66403538, yoy: 564.38 },
+          { id: "NZ", name: "New Zealand", value: 65444342, yoy: -1.57 },
+          { id: "CZ", name: "Czech Republic", value: 60221023, yoy: 10.12 },
+          { id: "KW", name: "Kuwait", value: 57431397, yoy: -9.84 },
+          { id: "HR", name: "Croatia", value: 53342084, yoy: 335.04 },
+          { id: "HU", name: "Hungary", value: 48548623, yoy: 4.31 },
+          { id: "EC", name: "Ecuador", value: 40566838, yoy: -57.2 },
+          { id: "SE", name: "Sweden", value: 39580987, yoy: -23.6 },
+          { id: "DK", name: "Denmark", value: 37977975, yoy: 53.54 },
+          { id: "UY", name: "Uruguay", value: 36942633, yoy: 25.65 },
+          { id: "AT", name: "Austria", value: 34286212, yoy: 25.42 },
+          { id: "QA", name: "Qatar", value: 31485318, yoy: -13.3 },
+          { id: "PT", name: "Portugal", value: 30903377, yoy: 36.7 },
+          { id: "EG", name: "Egypt", value: 30271792, yoy: -29.42 },
+          { id: "AO", name: "Angola", value: 30248613, yoy: -27.1 },
+          { id: "LT", name: "Lithuania", value: 29170097, yoy: 28.91 },
+          { id: "BS", name: "Bahamas", value: 28292811, yoy: 63.33 },
+          { id: "RO", name: "Romania", value: 27954981, yoy: -18.77 },
+          { id: "GR", name: "Greece", value: 27378245, yoy: 68.34 },
+          { id: "TT", name: "Trinidad And Tobago", value: 26610914, yoy: -4.95 },
+          { id: "NI", name: "Nicaragua", value: 24735229, yoy: 7.99 },
+          { id: "LV", name: "Latvia", value: 22130143, yoy: 0.64 },
+          { id: "NG", name: "Nigeria", value: 21797365, yoy: 26.78 },
+          { id: "JM", name: "Jamaica", value: 17328732, yoy: -17.54 },
+          { id: "PY", name: "Paraguay", value: 17187719, yoy: 7.61 },
+          { id: "IQ", name: "Iraq", value: 14930295, yoy: -47.13 },
+          { id: "OM", name: "Oman", value: 14324486, yoy: -13.77 },
+          { id: "KY", name: "Cayman Islands", value: 13307574, yoy: 108.18 },
+          { id: "LB", name: "Lebanon", value: 13205164, yoy: 16.28 },
+          { id: "MA", name: "Morocco", value: 12999692, yoy: 5.42 },
+          { id: "UZ", name: "Uzbekistan", value: 12156218, yoy: 24.55 },
+          { id: "JO", name: "Jordan", value: 11998008, yoy: -25.37 },
+          { id: "BM", name: "Bermuda", value: 10948516, yoy: 13.98 },
+          { id: "GE", name: "Georgia", value: 10501381, yoy: 39.61 },
+          { id: "NO", name: "Norway", value: 9873977, yoy: -8.56, lat: 60.4720, long: 8.4689 }
+,
+          { id: "BG", name: "Bulgaria", value: 9621044, yoy: -1.41 },
+          { id: "GM", name: "Gambia", value: 8209900, yoy: 27.16 },
+          { id: "BO", name: "Bolivia", value: 7386961, yoy: -19.18 },
+          { id: "IR", name: "Iran", value: 7144776, yoy: 328.74 },
+          { id: "KH", name: "Cambodia", value: 6698421, yoy: 303.39 },
+          { id: "GY", name: "Guyana", value: 6219188, yoy: -61.12 },
+          { id: "NP", name: "Nepal", value: 5980116, yoy: 4.76 },
+          { id: "CD", name: "Congo (DRC)", value: 5929292, yoy: -12.53 },
+          { id: "LY", name: "Libya", value: 5679010, yoy: 402.32 },
+          { id: "CI", name: "Ivory Coast", value: 5497982, yoy: -32.89 },
+          { id: "GH", name: "Ghana", value: 5397283, yoy: -31.2 },
+          { id: "BN", name: "Brunei", value: 5221190, yoy: 133 },
+          { id: "BB", name: "Barbados", value: 5097580, yoy: -23.78 },
+          { id: "SI", name: "Slovenia", value: 4432457, yoy: 14.89 },
+          { id: "SZ", name: "Swaziland", value: 4345422, yoy: 42.68 },
+          { id: "RU", name: "Russia", value: 4339142, yoy: -7.41, lat: 61.5240, long: 105.3188 },
+          { id: "TN", name: "Tunisia", value: 4321024, yoy: -53.7 },
+          { id: "YE", name: "Yemen", value: 4197248, yoy: 1211.09 },
+          { id: "TC", name: "Turks And Caicos", value: 4118050, yoy: 250.43 },
+          { id: "LK", name: "Sri Lanka", value: 3906020, yoy: -13.94 }
+        ];
+
+        // create map
+        var map = anychart.map();
+        map.geoData("anychart.maps.world");
+
+        // map title
+        map
+          .title()
+          .enabled(true)
+          .useHtml(true)
+          .padding([10, 0, 10, 0])
+          .text(
+            'Top 100 Tennessee Product Export Destinations 2024<br/>' +
+              '<span style="color:#929292; font-size: 12px;">(Data: Export Value $ and YoY %)</span>'
+          );
+
+        map.interactivity().selectionMode("none");
+        map.padding(0);
+
+        // map dataset
+        var dataSet = anychart.data.set(data);
+        var exportData = dataSet.mapAs({ 
+          size: "value",
+          lat: "lat",
+          long: "long"
+        });
+
+        // bubble series
+        var series = map.bubble(exportData);
+        map.maxBubbleSize("7%").minBubbleSize("0.3%");
+        series.labels(false).selectionMode("none");
+
+        // background choropleth
+        var choropleth = map.choropleth(exportData);
+        choropleth
+          .selectionMode("none")
+          .fill("#eaeaea")
+          .stroke("#D2D2D2")
+          .labels(false);
+        choropleth.hovered().stroke("#eaeaea").fill("#D2D2D2");
+
+        // tooltip formatting
+        map
+          .tooltip()
+          .useHtml(true)
+          .format(function () {
+            return (
+              "<strong>" +
+              this.getData("name") +
+              "</strong><br/>" +
+              "Export Value: $" +
+              this.getData("value").toLocaleString() +
+              "<br/>" +
+              "YoY Change: " +
+              this.getData("yoy") +
+              "%"
+            );
+          });
+      
+      
+
+        // zoom controls
+        var zoomController = anychart.ui.zoom();
+        zoomController.render(map);
+      
+        // set container id for the chart
+        map.container("container");
+        // draw map
+        map.draw();
+      });
+    </script>   
+ </body>
+</html>
